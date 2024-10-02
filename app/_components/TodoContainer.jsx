@@ -1,0 +1,105 @@
+'use client'
+import TodoList from './TodoList'
+import AddNote from './AddNote'
+import { useState, useEffect } from 'react'
+import toast, { LoaderIcon } from 'react-hot-toast'
+import { deleteAPI, getAPI, patchAPI, postAPI, putAPI } from '@/services/fetchAPI'
+
+const TodoContainer = () => {
+  const [todos, setTodos] = useState([]);
+  const [loading,setLoading]=useState(false);
+  const fetchTodoList = async () => {
+    try {
+      setLoading(true);
+      const res = await getAPI('/api/todo');
+      if (res.status === 'success') {
+        setTodos(res.data)
+        setLoading(false);
+      } else {
+        console.log(res.error)
+      }
+    } catch (error) {
+      console.error(error.message)
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+
+    fetchTodoList();
+  }, []);
+
+  const addTodo = async (title) => {
+    const newTodo = {title}
+    try {
+      const res = await postAPI('/api/todo', newTodo);
+      if (res.status === 'success') {
+        setTodos((prevTodos) => [res.data, ...prevTodos])
+        toast.success(res.message)
+      } else {
+        console.error(res.error);
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+  const completeTodo = async (todo) => {
+    try {
+      const updateTodo = {
+        completed: !todo.completed
+      };
+      const res = await patchAPI(`/api/todo/${todo.id}`, updateTodo);
+      if (res.status === 'success') {
+        setTodos((prevTodos) => (
+          prevTodos.map((todoItem) => (
+            todoItem.id === todo.id ? { ...todoItem, completed: updateTodo.completed } : todoItem
+          ))
+        ))
+      } else {
+        console.error(res.error)
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+  const deleteTodo = async (id) => {
+    try {
+      const res = await deleteAPI(`/api/todo/${id}`);
+      if (res.status === 'success') {
+        fetchTodoList();
+        toast.success(res.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  const editTodo = async (updatedTodo) => {
+    try {
+      const res = await putAPI(`/api/todo/${updatedTodo.id}`, updatedTodo);
+      console.log(res);
+      if (res.status === 'success') {
+        toast.success(res.message);
+        fetchTodoList();
+      } else {
+
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+  return (
+    <div className='max-w-[750px] flex flex-col items-center justify-center mx-auto my-10'>
+      <h1 className='uppercase mb-5 text-center'> Todo List</h1>
+      <div className="flex gap-3 items-center mb-3">
+       
+      </div>
+      <div className="relative w-[500px]">
+        {loading&&<div className='flex items-center justify-center '><LoaderIcon /></div>}
+        <TodoList editTodo={editTodo} deleteTodo={deleteTodo} todos={todos} completeTodo={completeTodo} />
+        <AddNote addTodo={addTodo} />
+      </div>
+    </div>
+  )
+}
+
+export default TodoContainer
