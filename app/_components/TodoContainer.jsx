@@ -7,20 +7,18 @@ import { deleteAPI, getAPI, patchAPI, postAPI, putAPI } from '@/services/fetchAP
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState([]);
-  const [loading,setLoading]=useState(false);
   const fetchTodoList = async () => {
     try {
-      setLoading(true);
       const res = await getAPI('/todo');
       if (res.status === 'success') {
         setTodos(res.data)
-        setLoading(false);
+      
       } else {
         console.log(res.error)
       }
     } catch (error) {
       console.error(error.message)
-      setLoading(false);
+    
     }
   }
   useEffect(() => {
