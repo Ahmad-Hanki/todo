@@ -5,10 +5,10 @@ const postAPI = async (
   headers = { "Content-Type": "application/json" }
 ) => {
   try {
-    if (!URL) {
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
       throw new Error("URL bulunamadı!");
     }
-    const data = await fetch(`${URL}`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
       method: method,
       headers: headers,
       body: JSON.stringify(body),
@@ -31,10 +31,10 @@ const patchAPI = async (
   headers = { "Content-Type": "application/json" }
 ) => {
   try {
-    if (!URL) {
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
       throw new Error("URL bulunamadı!");
     }
-    const data = await fetch(`${URL}`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
       method: method,
       headers: headers,
       body: JSON.stringify(body),
@@ -55,7 +55,7 @@ const getAPI = async (
   URL,
   headers = { "Content-Type": "application/json" }
 ) => {
-  const data = await fetch(`${URL}`, {
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
     method: "GET",
     headers: headers,
     cache: "no-store",
@@ -76,10 +76,10 @@ const deleteAPI = async (
   method = "DELETE",
 ) => {
   try {
-    if (!URL) {
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
       throw new Error("URL bulunamadı!");
     }
-    const data = await fetch(`${URL}`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
       method: method,
     })
       .then((res) => {
@@ -99,10 +99,10 @@ const putAPI = async (
   headers = { "Content-Type": "application/json" }
 ) => {
   try {
-    if (!URL) {
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
       throw new Error("URL bulunamadı!");
     }
-    const data = await fetch(`${URL}`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
       method: method,
       headers: headers,
       body: JSON.stringify(body),

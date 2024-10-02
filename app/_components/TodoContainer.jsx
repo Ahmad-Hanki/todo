@@ -11,7 +11,7 @@ const TodoContainer = () => {
   const fetchTodoList = async () => {
     try {
       setLoading(true);
-      const res = await getAPI('/api/todo');
+      const res = await getAPI('/todo');
       if (res.status === 'success') {
         setTodos(res.data)
         setLoading(false);
@@ -31,7 +31,7 @@ const TodoContainer = () => {
   const addTodo = async (title) => {
     const newTodo = {title}
     try {
-      const res = await postAPI('/api/todo', newTodo);
+      const res = await postAPI('/todo', newTodo);
       if (res.status === 'success') {
         setTodos((prevTodos) => [res.data, ...prevTodos])
         toast.success(res.message)
@@ -47,7 +47,7 @@ const TodoContainer = () => {
       const updateTodo = {
         completed: !todo.completed
       };
-      const res = await patchAPI(`/api/todo/${todo.id}`, updateTodo);
+      const res = await patchAPI(`/todo/${todo.id}`, updateTodo);
       if (res.status === 'success') {
         setTodos((prevTodos) => (
           prevTodos.map((todoItem) => (
@@ -63,7 +63,7 @@ const TodoContainer = () => {
   }
   const deleteTodo = async (id) => {
     try {
-      const res = await deleteAPI(`/api/todo/${id}`);
+      const res = await deleteAPI(`/todo/${id}`);
       if (res.status === 'success') {
         fetchTodoList();
         toast.success(res.message);
@@ -75,7 +75,7 @@ const TodoContainer = () => {
 
   const editTodo = async (updatedTodo) => {
     try {
-      const res = await putAPI(`/api/todo/${updatedTodo.id}`, updatedTodo);
+      const res = await putAPI(`/todo/${updatedTodo.id}`, updatedTodo);
       console.log(res);
       if (res.status === 'success') {
         toast.success(res.message);
@@ -94,7 +94,7 @@ const TodoContainer = () => {
        
       </div>
       <div className="relative w-[500px]">
-        {loading&&<div className='flex items-center justify-center '><LoaderIcon /></div>}
+        {loading&&<div className='flex items-center justify-center'><LoaderIcon /></div>}
         <TodoList editTodo={editTodo} deleteTodo={deleteTodo} todos={todos} completeTodo={completeTodo} />
         <AddNote addTodo={addTodo} />
       </div>
