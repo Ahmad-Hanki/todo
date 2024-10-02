@@ -92,7 +92,6 @@ const TodoContainer = () => {
        
       </div>
       <div className="relative w-[500px]">
-        {loading&&<div className='flex items-center justify-center'><LoaderIcon /></div>}
         <TodoList editTodo={editTodo} deleteTodo={deleteTodo} todos={todos} completeTodo={completeTodo} />
         <AddNote addTodo={addTodo} />
       </div>
