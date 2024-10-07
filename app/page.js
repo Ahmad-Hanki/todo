@@ -9,3 +9,6 @@ export default function Home() {
     </>
   );
 }
+
+
+//     "postinstall": "prisma generate"
