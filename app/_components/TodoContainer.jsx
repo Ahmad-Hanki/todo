@@ -74,7 +74,6 @@ const TodoContainer = () => {
   const editTodo = async (updatedTodo) => {
     try {
       const res = await putAPI(`/todo/${updatedTodo.id}`, updatedTodo);
-      console.log(res);
       if (res.status === 'success') {
         toast.success(res.message);
         fetchTodoList();
